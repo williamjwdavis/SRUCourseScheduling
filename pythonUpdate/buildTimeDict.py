@@ -6,8 +6,23 @@ Created on Wed Feb 12 15:28:56 2020
 """
 import pickle
 
+"""
+This creates the timeEncodingDictionary according to the conventions listed in the documentation.
+The conventions generally are: if it's a regular MWF, or MTThF course (i.e. course that is 
+an hour in length even if it is 4 credits), time slot is denoted by 8M, 8W, etc. where the first
+character(s) are the beginning time, and the second character(s) is the day of the week.  Next,
+the 1.5 hour courses are encoded by their start time, 8, 930, etc, and then the day of the week,
+T, R, followed by L, for long.  This is simply to differentiate the overlapping timeslots that 
+cannot go together, but are still possibilities throughout the day.
+"""
+
 timeEncodingDict={}
 
+#These values where manually decided upon for convention's sake.  
+#While they are 'hard-coded' now, they can be referred to generally
+#after this point
+
+#This is for MTWRF classes that are 1 hour long
 for i in range(9):
     for j in range(5):
         if (i==0):
@@ -39,7 +54,8 @@ for i in range(9):
         elif (j==4):
             char2='F'
         timeEncodingDict[char1+char2] = str(i)+str(j)
-        
+      
+#This is for TR classes that are 1.5 hours long and thus encoded with the extra L
 for i in range(5):
     for j in range(2):
         if (i==0):
@@ -57,7 +73,8 @@ for i in range(5):
         elif (j==1):
             char2="RL"
         timeEncodingDict[char1+char2] = str(i)+str(j+5)
-        
+  
+#Dump the dictionary into the files for us to use later      
 f = open("timeEncodingDict.pk1",'wb')
 pickle.dump(timeEncodingDict,f)
 f.close()
