@@ -92,10 +92,10 @@ def getClasses(classDf):
         tempClass.setNonRooms(row[1][5])
         tempClass.setNumSections(row[1][6])        
         tempClass.printClass()
-        classDict[tempClass.getClass()]=count
+        classDict[count]=tempClass
         
         count+=1
         
-        break
+        
 getClasses(data)
     
