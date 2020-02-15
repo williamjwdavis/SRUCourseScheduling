@@ -28,11 +28,16 @@ def handleTime(final):
     if (re.match("^MWF",final.name)):
         for cellNum in range(len(final)):            
             tempInnerSeries=[]
-            for char1 in final[cellNum].split(','):
+            try:
+                for char1 in final[cellNum].split(','):
                 #Takes 
-                tempInnerSeries.append(char1+'M')
-                tempInnerSeries.append(char1+'W')
-                tempInnerSeries.append(char1+'F')
+                    tempInnerSeries.append(char1+'M')
+                    tempInnerSeries.append(char1+'W')
+                    tempInnerSeries.append(char1+'F')
+            except AttributeError:
+                tempInnerSeries.append(str(final[cellNum])+'M')
+                tempInnerSeries.append(str(final[cellNum])+'W')
+                tempInnerSeries.append(str(final[cellNum])+'F')
             finalSeries.append(tempInnerSeries)
             #final series is a series of the encoded times , i.e. 8M or 12W
     
@@ -40,39 +45,73 @@ def handleTime(final):
     elif (re.match("^TTh",final.name)):
         for cellNum in range(len(final)):            
             tempInnerSeries=[]
-            for char1 in final[cellNum].split(','):
-                tempInnerSeries.append(char1+'T')
-                tempInnerSeries.append(char1+'R')
-                if(char1==8):
-                    tempInnerSeries.append(char1+'TL')
-                    tempInnerSeries.append(char1+'RL')
-                elif(char1==9):
+            try:
+                for char1 in final[cellNum].split(','):
+                    tempInnerSeries.append(char1+'T')
+                    tempInnerSeries.append(char1+'R')
+                    if(char1==8):
+                        tempInnerSeries.append(char1+'TL')
+                        tempInnerSeries.append(char1+'RL')
+                    elif(char1==9):
+                        tempInnerSeries.append('8TL')
+                        tempInnerSeries.append('930TL')
+                        tempInnerSeries.append('8RL')
+                        tempInnerSeries.append('930RL')
+                    elif(char1==10):
+                        tempInnerSeries.append('930TL')
+                        tempInnerSeries.append('930RL')
+                    elif(char1==11):
+                        tempInnerSeries.append(char1+'TL')
+                        tempInnerSeries.append(char1+'RL')
+                    elif(char1==12):
+                        tempInnerSeries.append('11TL')
+                        tempInnerSeries.append('11RL')
+                    elif(char1==1):
+                        pass
+                    elif(char1==2):
+                        tempInnerSeries.append(char1+'TL')
+                        tempInnerSeries.append(char1+'RL')
+                    elif(char1==3):
+                        tempInnerSeries.append('2TL')
+                        tempInnerSeries.append('2RL')
+                        tempInnerSeries.append('330TL')
+                        tempInnerSeries.append('330RL')
+                    elif(char1==4):
+                        tempInnerSeries.append('330TL')
+                        tempInnerSeries.append('330RL') 
+            except AttributeError:
+                tempInnerSeries.append(str(final[cellNum])+'T')
+                tempInnerSeries.append(str(final[cellNum])+'R')
+                if(final[cellNum]==8):
+                    tempInnerSeries.append(str(final[cellNum])+'TL')
+                    tempInnerSeries.append(str(final[cellNum])+'RL')
+                elif(final[cellNum]==9):
                     tempInnerSeries.append('8TL')
                     tempInnerSeries.append('930TL')
                     tempInnerSeries.append('8RL')
                     tempInnerSeries.append('930RL')
-                elif(char1==10):
+                elif(final[cellNum]==10):
                     tempInnerSeries.append('930TL')
                     tempInnerSeries.append('930RL')
-                elif(char1==11):
-                    tempInnerSeries.append(char1+'TL')
-                    tempInnerSeries.append(char1+'RL')
-                elif(char1==12):
+                elif(final[cellNum]==11):
+                    tempInnerSeries.append(str(final[cellNum])+'TL')
+                    tempInnerSeries.append(str(final[cellNum])+'RL')
+                elif(final[cellNum]==12):
                     tempInnerSeries.append('11TL')
                     tempInnerSeries.append('11RL')
-                elif(char1==1):
+                elif(final[cellNum]==1):
                     pass
-                elif(char1==2):
-                    tempInnerSeries.append(char1+'TL')
-                    tempInnerSeries.append(char1+'RL')
-                elif(char1==3):
+                elif(final[cellNum]==2):
+                    tempInnerSeries.append(str(final[cellNum])+'TL')
+                    tempInnerSeries.append(str(final[cellNum])+'RL')
+                elif(final[cellNum]==3):
                     tempInnerSeries.append('2TL')
                     tempInnerSeries.append('2RL')
                     tempInnerSeries.append('330TL')
                     tempInnerSeries.append('330RL')
-                elif(char1==4):
+                elif(final[cellNum]==4):
                     tempInnerSeries.append('330TL')
-                    tempInnerSeries.append('330RL')           
+                    tempInnerSeries.append('330RL') 
             finalSeries.append(tempInnerSeries)
     else:
         print("Column Title Error - No MWF or TTh Detected")
