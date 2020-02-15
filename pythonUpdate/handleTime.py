@@ -15,7 +15,7 @@ cwd = os.getcwd()
 #final=temp["MWF_Unavailable_Times"]
 #final=temp["TTh_Unavailable_Times"]
 #Load in our time encoding dictionary
-f = open(cwd+'\timeEncodingDict.pk1','rb')
+f = open('timeEncodingDict.pk1','rb')
 timeEncodingDict = pickle.load(f)
 
 def handleTime(final):
