@@ -11,7 +11,6 @@ import handleTime as ht
 
 cwd = os.getcwd()
 data = pd.read_excel(cwd+"\SampleInput.xlsx",sheet_name="Classes")
-column=data["Class"]
 
 class Class():
     department = None
