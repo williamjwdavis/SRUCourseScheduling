@@ -90,11 +90,14 @@ def getClasses(classDf):
         tempClass.setTR_nonTimes(TR_times[count])
         tempClass.setNonRooms(row[1][5])
         tempClass.setNumSections(row[1][6])        
-        tempClass.printClass()
+        #tempClass.printClass()
         classDict[count]=tempClass
         
         count+=1
+    return classDict
         
-        
-getClasses(data)
+classDict = getClasses(data)
+f = open(cwd+"\classDict.pk1",'wb')
+pickle.dump(classDict, f)
+f.close()
     
