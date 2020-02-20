@@ -43,6 +43,7 @@ for i in range(9):
             char1='3'
         elif (i==8):
             char1='4'
+            
         if (j==0):
             char2='M'
         elif (j==1):
@@ -75,7 +76,7 @@ for i in range(5):
         timeEncodingDict[char1+char2] = str(i)+str(j+5)
   
 #Dump the dictionary into the files for us to use later      
-f = open("timeEncodingDict.pk1",'wb')
+f = open("dictionaries\timeEncodingDict.pk1",'wb')
 pickle.dump(timeEncodingDict,f)
 f.close()
         

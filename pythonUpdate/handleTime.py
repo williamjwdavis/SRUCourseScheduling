@@ -15,11 +15,15 @@ cwd = os.getcwd()
 #final=temp["MWF_Unavailable_Times"]
 #final=temp["TTh_Unavailable_Times"]
 #Load in our time encoding dictionary
-f = open('timeEncodingDict.pk1','rb')
+f = open('dictionaries\timeEncodingDict.pk1','rb')
 timeEncodingDict = pickle.load(f)
+f.close()
+f = open('dictionaries\timeEncodingDictFinal.pk1','rb')
+timeEncodingDictFinal = pickle.load(f)
+f.close()
 
-def handleTime(final):
-    """handleTime is expecting to be passed a dataFrame that is
+def handleTime1(final):
+    """handleTime1 is expecting to be passed a dataFrame that is
     just a collection of times.  The function will output a similar 
     array that is just the corresponding encoded time labels"""
     finalSeries = []
@@ -120,8 +124,33 @@ def handleTime(final):
     for series in finalSeries:
         decodedSeries=[]
         for ele in series:
-            decodedTime=timeEncodingDict[ele]
+            try:
+                decodedTime=timeEncodingDict[ele]
+                decodedSeries.append(decodedTime)
+            except KeyError:
+                decodedSeries=[]
+        decodedFinalSeries.append(decodedSeries)
+   
+    return decodedFinalSeries
+    
+def handleTime2(final):
+    """
+    handlTime2 takes the previous encoding that is not continuously numbered
+    and rehashes it so that it is numeric straight from 1 to n so that it can 
+    be used for the linear algebra associated with the linear programming problem
+    """
+    decodedFinalSeries=[]
+    for series in final:
+        decodedSeries=[]
+        for ele in series:
+            decodedTime = timeEncodingDictFinal[ele]
             decodedSeries.append(decodedTime)
         decodedFinalSeries.append(decodedSeries)
-            
+        
     return decodedFinalSeries
+
+def handleTimeAll(final):
+    temp = final
+    temp = handleTime1(temp)
+    temp = handleTime2(temp)
+    return temp

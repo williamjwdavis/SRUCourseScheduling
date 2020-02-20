@@ -9,6 +9,9 @@ import pickle
 f = open('timeEncodingDict.pk1','rb')
 timeEncodingDict = pickle.load(f)
 f.close()
+f = open('timeEncodingDictFinal.pk1','rb')
+timeEncodingDictFinal = pickle.load(f)
+f.close()
 
 forbidden_pairs = []
 allowedPairsDict = {}
@@ -50,7 +53,11 @@ for outerEle in timeEncodingDict.keys():
             if key in allowedPairsDict:
                 pass
             else:
-                forbidden_pairs.append(temp1+' '+temp2)
+                if (int(temp1)<10):
+                    temp1 = str(0) + str(temp1)
+                if (int(temp2)<10):
+                    temp2 = str(0) + str(temp2)
+                forbidden_pairs.append([timeEncodingDictFinal[temp1],timeEncodingDictFinal[temp2]])
                 
 f = open("forbidden_pairs.pk1",'wb')
 pickle.dump(forbidden_pairs,f)

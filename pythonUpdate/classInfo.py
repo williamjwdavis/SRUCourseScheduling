@@ -12,6 +12,10 @@ import handleTime as ht
 cwd = os.getcwd()
 data = pd.read_excel(cwd+"\SampleInput.xlsx",sheet_name="Classes")
 
+f = open('dictionaries\roomDict.pk1','rb')
+roomDict = pickle.load(f)
+f.close()
+
 class Class():
     department = None
     number = None
@@ -29,6 +33,7 @@ class Class():
         self.numCredits = 0
         self.MWF_nonTimes = []
         self.TR_nonTimes = []
+        self.all_nonTimes = [] #All times should only contain the final double encoded times
         self.nonRooms = []
         self.nonClasses = []
         
@@ -37,17 +42,24 @@ class Class():
     def setNumCredits(self, numCredits):
         self.numCredits=numCredits
     def setMWF_nonTimes(self, nonTimes):
-        #self.MWF_nonTimes = ht.handleTime(MWF_list)
         self.MWF_nonTimes = nonTimes
     def setTR_nonTimes(self, nonTimes):
-        #self.TH_nonTimes = ht.handleTime(TH_list)
         self.TR_nonTimes = nonTimes
+    def setAll_nonTimes(self):
+        self.all_nonTimes = self.MWF_nonTimes + self.TR_nonTimes
+        
     def setNumSections(self, numSections):
         self.numSections = numSections
     def setNonClasses(self, nonClasses):
         self.nonClasses = nonClasses
-    def setNonRooms(self, nonRooms):
-        self.nonRooms = nonRooms
+    def calcNonRooms(self, nonRooms):
+        try:
+            for nonRoom in nonRooms.split(','):
+                for keyNum in roomDict:
+                    if (nonRoom == roomDict[keyNum].getRoom()):
+                        self.nonRooms.append(keyNum)
+        except AttributeError:
+            self.nonRooms.append(None)
         
     #Get functions for the attributes
     def getNumCredits(self):
@@ -64,9 +76,11 @@ class Class():
         return self.nonClasses
     def getNonRooms(self):
         return self.nonRooms
+    def getAllTimeConflicts(self):
+        return self.all_nonTimes
     
     def printClass(self):
-        print("Class: " + self.department + " "+ str(self.number))
+        print("Class: " + self.department + " " + str(self.number))
         print("Credits: " + str(self.numCredits))
         print("Number of Setions " + str(self.numSections))
         print("NonRooms: " + str(self.nonRooms))
@@ -79,16 +93,17 @@ def getClasses(classDf):
     MWF_times = classDf["MWF_Room-Time_Exceptions"]
     TR_times = classDf["TTh_Room-Time_Exceptions"]
     
-    MWF_times = ht.handleTime(MWF_times)
-    TR_times = ht.handleTime(TR_times)
-    count = 0
+    MWF_times = ht.handleTimeAll(MWF_times)
+    TR_times = ht.handleTimeAll(TR_times)
+    count = 1
     for row in classDf.iterrows():
         tempClass = Class(row[1][0][0:4], row[1][0][5:])
         tempClass.setNumCredits(row[1][1])
         tempClass.setNonClasses(row[1][2])
-        tempClass.setMWF_nonTimes(MWF_times[count])
-        tempClass.setTR_nonTimes(TR_times[count])
-        tempClass.setNonRooms(row[1][5])
+        tempClass.setMWF_nonTimes(MWF_times[count-1])
+        tempClass.setTR_nonTimes(TR_times[count-1])
+        tempClass.setAll_nonTimes()
+        tempClass.calcNonRooms(row[1][5])
         tempClass.setNumSections(row[1][6])        
         #tempClass.printClass()
         classDict[count]=tempClass
@@ -97,7 +112,7 @@ def getClasses(classDf):
     return classDict
         
 classDict = getClasses(data)
-f = open(cwd+"\classDict.pk1",'wb')
+f = open("dictionaries\classDict.pk1",'wb')
 pickle.dump(classDict, f)
 f.close()
     
