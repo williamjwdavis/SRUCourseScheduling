@@ -12,10 +12,10 @@ import handleTime as ht
 cwd = os.getcwd()
 data = pd.read_excel(cwd + "\SampleInput.xlsx",sheet_name='Prof')
 
-f = open('dictionaries\classDict.pk1',"rb")
+f = open('dictionaries/classDict.pk1',"rb")
 classDict = pickle.load(f)
 f.close()
-f = open('dictionaries\roomDict.pk1','rb')
+f = open('dictionaries/roomDict.pk1','rb')
 roomDict = pickle.load(f)
 f.close()
 
@@ -29,6 +29,7 @@ class Prof():
     TR_nonTimes = []
     all_nonTimes = [] #All_nonTimes should only contain the double encoded times 
     nonRooms = []
+    maxPreps = 0
     
     def __init__(self, name):
         self.name = name
@@ -40,6 +41,9 @@ class Prof():
         self.minLoad = minLoad
     def setMaxLoad(self, maxLoad):
         self.maxLoad = maxLoad
+        
+    def setMaxPreps(self, maxPreps):
+        self.maxPreps = maxPreps
 
     def setMWF_nonTimes(self, nonTimes):
         self.MWF_nonTimes = nonTimes
@@ -85,6 +89,12 @@ class Prof():
         return self.nonClasses
     def getReqClasses(self):
         return self.reqClasses
+    def getMaxLoad(self):
+        return self.maxLoad
+    def getMinLoad(self):
+        return self.minLoad
+    def getMaxPreps(self):
+        return self.maxPreps
         
     def printClass(self):
         print("Name: " + self.name)
@@ -115,6 +125,7 @@ def getProfs(profDf):
         tempProf.calcNonRooms(row[1][5])
         tempProf.setMinLoad(row[1][6])
         tempProf.setMaxLoad(row[1][7])
+        tempProf.setMaxPreps(row[1][8])
         #tempProf.printClass()
         
         profDict[count] = tempProf

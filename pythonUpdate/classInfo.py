@@ -10,9 +10,9 @@ import pandas as pd
 import handleTime as ht
 
 cwd = os.getcwd()
-data = pd.read_excel(cwd+"\SampleInput.xlsx",sheet_name="Classes")
+data = pd.read_excel("SampleInput.xlsx",sheet_name="Classes")
 
-f = open('dictionaries\roomDict.pk1','rb')
+f = open('dictionaries/roomDict.pk1','rb')
 roomDict = pickle.load(f)
 f.close()
 
@@ -24,7 +24,6 @@ class Class():
     TR_nonTimes = []
     nonRooms = []
     nonClasses = []
-    
     num_sections = 0
     
     def __init__(self, department, number):
@@ -50,8 +49,15 @@ class Class():
         
     def setNumSections(self, numSections):
         self.numSections = numSections
-    def setNonClasses(self, nonClasses):
-        self.nonClasses = nonClasses
+    def setNonClasses(self, nonClasses, classDict):
+        try:
+            for nonClass in nonClasses.split(','):
+                for keyNum in classDict.keys():
+                    if (nonClass == classDict[keyNum].getClass()):
+                        self.nonClasses.append(keyNum)
+        except AttributeError:
+            self.nonClasses.append(None)
+            
     def calcNonRooms(self, nonRooms):
         try:
             for nonRoom in nonRooms.split(','):
@@ -84,6 +90,7 @@ class Class():
         print("Credits: " + str(self.numCredits))
         print("Number of Setions " + str(self.numSections))
         print("NonRooms: " + str(self.nonRooms))
+        print("NonClasses: " + str(self.nonClasses))
         print("MWF_NonTimes: " + str(self.MWF_nonTimes))
         print("TTH_NonTimes: " + str(self.TR_nonTimes))
     
@@ -99,7 +106,7 @@ def getClasses(classDf):
     for row in classDf.iterrows():
         tempClass = Class(row[1][0][0:4], row[1][0][5:])
         tempClass.setNumCredits(row[1][1])
-        tempClass.setNonClasses(row[1][2])
+        #tempClass.setNonClasses(row[1][2])
         tempClass.setMWF_nonTimes(MWF_times[count-1])
         tempClass.setTR_nonTimes(TR_times[count-1])
         tempClass.setAll_nonTimes()
@@ -110,8 +117,14 @@ def getClasses(classDf):
         
         count+=1
     return classDict
+
+def setAllNonClasses(classDict, classDf):
+    for key in classDict.keys():
+        classDict[key].setNonClasses(classDf.iloc[key-1][2],classDict)
+    return classDict
         
 classDict = getClasses(data)
+classDict = setAllNonClasses(classDict,data)
 f = open("dictionaries\classDict.pk1",'wb')
 pickle.dump(classDict, f)
 f.close()

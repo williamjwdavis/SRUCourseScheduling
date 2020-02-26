@@ -61,7 +61,7 @@ def makeRooms(roomDf):
     return roomDict
 
 roomDict = makeRooms(data)
-f = open('dictionaries\roomDict.pk1','wb')
+f = open('dictionaries/roomDict.pk1','wb')
 pickle.dump(roomDict,f)
 f.close()
     

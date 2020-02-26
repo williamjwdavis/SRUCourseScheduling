@@ -4,86 +4,41 @@ Created on Wed Feb 19 19:39:01 2020
 
 @author: willi
 """
+import classInfo
+import profInfo
+import roomInfo
+import createInputVars as var
 import os
-import pandas as pd
-import numpy as np
-import pickle
-
-classes = pd.read_excel("SampleInput.xlsx",sheet_name = 'Classes')
-profs = pd.read_excel("SampleInput.xlsx",sheet_name = 'Prof')
-rooms = pd.read_excel("SampleInput.xlsx",sheet_name = 'Rooms')
-
-
-f = open('dictionaries\classDict.pk1','rb')
-classDict = pickle.load(f)
-f.close()
-f = open('dictionaries\profDict.pk1','rb')
-profDict = pickle.load(f)
-f.close()
-f = open('dictionaries\roomDict.pk1','rb')
-roomDict = pickle.load(f)
-f.close()
-f = open('dictionaries\timeEncodingDictFinal.pk1','rb')
-timeEncodingDict = pickle.load(f)
-f.close()
-f = open('forbidden_pairs.pk1','rb')
-forbiddenPairs = pickle.load(f)
-f.close()
-
-nclasses = np.sum(classes["Num_Sections"])
-ngroups = len(classes)
-nprofs = len(profs)
-ntimes = len(timeEncodingDict)
-nrooms = len(rooms)
-
-forbidden_rooms_for_course = []
-for i in range(len(classDict)):
-    forbidden_rooms_for_course.append(classDict[i+1].getNonRooms())
-
-forbidden_times_for_room = []
-for i in range(len(roomDict)):
-    forbidden_times_for_room.append(roomDict[i+1].getAllTimeConflicts())
-    
-forbidden_times_for_class = []
-for i in range(len(classDict)):
-    forbidden_times_for_class.append(classDict[i+1].getAllTimeConflicts())
-
-forbidden_times_for_faculty = []
-for i in range(len(profDict)):
-    forbidden_times_for_faculty.append(profDict[i+1].getAllTimeConflicts())
-    
-forbidden_class_for_faculty = []
-for i in range(len(profDict)):
-    forbidden_class_for_faculty.append(profDict[i+1].getNonClasses())
-    
-forbidden_rooms_for_faculty = []
-for i in range(len(profDict)):
-    forbidden_rooms_for_faculty.append(profDict[i+1].getNonRooms())
-    
-c = [] #c is the number of credits of class i 
-for i in range(len(classDict)):
-    c.append(classDict[i+1].getNumCredits())
-    
-required_courses_faculty = []
-for i in range(len(profDict)):
-    required_courses_faculty.append(profDict[i+1].getReqClasses())
-    
 File = open('matlabInput1.txt','a')
 File.truncate(0)
-inputs = ["nclasses = " + str(nclasses) + "\n",
-          "ngroups = " + str(ngroups) + "\n",
-          "nprofs = " + str(nprofs) + "\n",
-          "ntimes = " + str(ntimes) + "\n",
-          "nrooms = " + str(nrooms) + "\n",
-          "forbidden_rooms_for_course = " + str(forbidden_rooms_for_course) + "\n",
-          "forbidden_times_for_room = " + str(forbidden_times_for_room) + "\n",
-          "forbidden_times_for_class = " + str(forbidden_times_for_class) + "\n",
-          "forbidden_times_for_faculty = " + str(forbidden_times_for_faculty) + "\n",
-          "forbidden_class_for_faculty = " + str(forbidden_class_for_faculty) + "\n",
-          "forbidden_rooms_for_faculty = " + str(forbidden_rooms_for_faculty) + "\n",
-          "c = " + str(c) + "\n",
-          "required_courses_faculty = " + str(required_courses_faculty) + "\n",
-          "forbidden_pairs = " + str(forbiddenPairs)]
+inputs = ["nclasses = " + str(var.nclasses) + ";\n",
+          "ngroups = " + str(var.ngroups) + ";\n",
+          "nprofs = " + str(var.nprofs) + ";\n",
+          "ntimes = " + str(var.ntimes) + ";\n",
+          "nrooms = " + str(var.nrooms) + ";\n",
+          "forbidden_rooms_for_course = " + str(var.forbidden_rooms_for_course) + ";\n",
+          "forbidden_times_for_room = " + str(var.forbidden_times_for_room) + ";\n",
+          "forbidden_times_for_class = " + str(var.forbidden_times_for_class) + ";\n",
+          "forbidden_times_for_faculty = " + str(var.forbidden_times_for_faculty) + ";\n",
+          "forbidden_class_for_faculty = " + str(var.forbidden_class_for_faculty) + ";\n",
+          "forbidden_rooms_for_faculty = " + str(var.forbidden_rooms_for_faculty) + ";\n",
+          "c = " + str(var.c) + ";\n",
+          "required_courses_faculty = " + str(var.required_courses_faculty) + ";\n",
+          "forbidden_pairs_rooms = " + str(var.forbidden_pairs_rooms) + ";\n",
+          "forbidden_pairs_prof = " + str(var.forbidden_pairs_prof) + ";\n",
+          "restricted_pairs_of_classes = " + str(var.restricted_pairs_of_classes) + ";\n",
+          "load_upper = " + str(var.load_upper) + ";\n",
+          "load_lower = " + str(var.load_lower) + ";\n",
+          "Monday = " + str(var.Monday) + ";\n",
+          "Tuesday = " + str(var.Tuesday) + ";\n",
+          "Wednesday = " +str(var.Wednesday) + ";\n",
+          "Thursday = " + str(var.Thursday) + ";\n",
+          "Friday = " + str(var.Friday) + ";\n",
+          "groups = " + str(var.groups) + ";\n",
+          "maxPreps = " + str(var.maxPreps) + ";\n",
+          "longCourses = " + str(var.longCourses) + ";\n",
+          "regCourses = " +str(var.regCourses) + ";\n",
+          "forbidden_pairs = " + str(var.forbiddenPairs) +";"]
 File.writelines(inputs)
 File.close()
 

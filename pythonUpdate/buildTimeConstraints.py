@@ -6,10 +6,10 @@ Created on Wed Feb 12 15:55:39 2020
 """
 import pickle
 
-f = open('timeEncodingDict.pk1','rb')
+f = open('dictionaries/timeEncodingDict.pk1','rb')
 timeEncodingDict = pickle.load(f)
 f.close()
-f = open('timeEncodingDictFinal.pk1','rb')
+f = open('dictionaries/timeEncodingDictFinal.pk1','rb')
 timeEncodingDictFinal = pickle.load(f)
 f.close()
 
@@ -36,6 +36,7 @@ Next the allowedPairsDict is passed to this set of nested loops where the system
 the forbiddenPairs.  This is simple enough, however the strings and characters are modified
 a bit in order to pass nicely off to matlab
 """
+alreadySeen={}
 for outerEle in timeEncodingDict.keys():
     for innerEle in timeEncodingDict.keys():
         if (outerEle == innerEle):
@@ -57,9 +58,14 @@ for outerEle in timeEncodingDict.keys():
                     temp1 = str(0) + str(temp1)
                 if (int(temp2)<10):
                     temp2 = str(0) + str(temp2)
-                forbidden_pairs.append([timeEncodingDictFinal[temp1],timeEncodingDictFinal[temp2]])
+                if str(temp2+" "+temp1) in alreadySeen.keys():
+                    pass
+                else:
+                    forbidden_pairs.append([timeEncodingDictFinal[temp1],timeEncodingDictFinal[temp2]])
+                    alreadySeen[temp1+" "+temp2] = 1
                 
 f = open("forbidden_pairs.pk1",'wb')
 pickle.dump(forbidden_pairs,f)
 f.close()
+
 
