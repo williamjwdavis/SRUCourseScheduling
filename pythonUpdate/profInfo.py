@@ -12,6 +12,7 @@ import handleTime as ht
 cwd = os.getcwd()
 data = pd.read_excel(cwd + "\SampleInput.xlsx",sheet_name='Prof')
 
+#import the dictionaries we've built already
 f = open('dictionaries/classDict.pk1',"rb")
 classDict = pickle.load(f)
 f.close()
@@ -20,6 +21,9 @@ roomDict = pickle.load(f)
 f.close()
 
 class Prof():
+    #these are the current attributes that describe a professor
+    #we can build these out further in the future, but that
+    #would also need further implementation of corresponding methods
     name = None
     minLoad = 6 #Default Values if none are given
     maxLoad = 15 #Default Values if none are given
@@ -37,14 +41,13 @@ class Prof():
         self.nonRooms = []
         self.reqClasses = []
         
+    #setters
     def setMinLoad(self, minLoad):
         self.minLoad = minLoad
     def setMaxLoad(self, maxLoad):
         self.maxLoad = maxLoad
-        
     def setMaxPreps(self, maxPreps):
         self.maxPreps = maxPreps
-
     def setMWF_nonTimes(self, nonTimes):
         self.MWF_nonTimes = nonTimes
     def setTR_nonTimes(self, nonTimes):
@@ -53,7 +56,9 @@ class Prof():
         self.nonRooms = nonRooms
     def setAll_nonTimes(self):
         self.all_nonTimes = self.MWF_nonTimes + self.TR_nonTimes
-
+        
+    #build the classes from the class dictionary and add it to 
+    #the array that we'll be exporting
     def calcNonClasses(self, nonClasses):
         try:
             for nonClass in nonClasses.split(','):
@@ -62,7 +67,9 @@ class Prof():
                         self.nonClasses.append(keyNum)
         except AttributeError:
             self.nonClasses.append(None)
-        
+    
+    #build the rooms from the room dicitonary and add it to 
+    #the array that we'll be exporting
     def calcNonRooms(self, nonRooms):
         try:
             for nonRoom in nonRooms.split(','):
@@ -71,7 +78,11 @@ class Prof():
                         self.nonRooms.append(keyNum)
         except AttributeError:
             self.nonRooms.append(None)
-            
+        
+    #required classes is a bit more complicated since we have
+    #to split the string and treat it separatley and then find
+    #it in the class dictionary that we've created, finally
+    #adding it to the array that we'll export
     def calcReqClasses(self, reqClasses):
         try:
             for reqClass in reqClasses.split(','):
@@ -81,6 +92,7 @@ class Prof():
         except AttributeError:
             self.reqClasses.append(None)
             
+    #getters
     def getAllTimeConflicts(self):
         return self.all_nonTimes
     def getNonRooms(self):
@@ -108,13 +120,19 @@ class Prof():
 def getProfs(profDf):
     profDict = {}
     
+    #grab the times from the Excel doc
     MWF_times = profDf["MWF_Unavailable_Times"]
     TR_times = profDf["TTh_Unavailable_Times"]
     
+    #take the times and put them through the preprocessing 
+    #in handleTime.py script
     MWF_times = ht.handleTimeAll(MWF_times)
     TR_times = ht.handleTimeAll(TR_times)
     count = 1
     
+    #iterate through each row in the excel doc and 
+    #load each row into a new object and finally 
+    #add it to an object array
     for row in profDf.iterrows():
         tempProf = Prof(row[1][0])
         tempProf.calcReqClasses(row[1][1])

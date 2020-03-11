@@ -17,6 +17,9 @@ roomDict = pickle.load(f)
 f.close()
 
 class Class():
+    #These are the attributes we'll be tracking for the classes
+    #additinaly attributes can be constructed with corresponding methods
+    #in the future
     department = None
     number = None
     numCredits = 0
@@ -26,6 +29,8 @@ class Class():
     nonClasses = []
     num_sections = 0
     
+    #Some of these values were initialized to an empty array since there 
+    #was a bug that would carry forward the last object's values
     def __init__(self, department, number):
         self.department = department
         self.number = number
@@ -49,6 +54,10 @@ class Class():
         
     def setNumSections(self, numSections):
         self.numSections = numSections
+        
+    #this sets the classes by calling on the class dictionary that will
+    #be made and getting the appropriate encoded value of the class
+    #thus adding it to the array
     def setNonClasses(self, nonClasses, classDict):
         try:
             for nonClass in nonClasses.split(','):
@@ -58,6 +67,9 @@ class Class():
         except AttributeError:
             self.nonClasses.append(None)
             
+    #this sets the rooms by calling on the room dictionary that was
+    #made and getting hte appropriate encoded value of the rooms
+    #thus adding it to the array
     def calcNonRooms(self, nonRooms):
         try:
             for nonRoom in nonRooms.split(','):
@@ -97,12 +109,17 @@ class Class():
 def getClasses(classDf):
     classDict={}
     
+    #slot the times into dataframes
     MWF_times = classDf["MWF_Room-Time_Exceptions"]
     TR_times = classDf["TTh_Room-Time_Exceptions"]
     
+    #run the preprocessing from handleTime.py
     MWF_times = ht.handleTimeAll(MWF_times)
     TR_times = ht.handleTimeAll(TR_times)
     count = 1
+    
+    #iteratre through the rows to build objects for each class that needs
+    #to be accounted for in the Excel doc
     for row in classDf.iterrows():
         tempClass = Class(row[1][0][0:4], row[1][0][5:])
         tempClass.setNumCredits(row[1][1])
@@ -118,6 +135,9 @@ def getClasses(classDf):
         count+=1
     return classDict
 
+#since we can't have an attribute of the dictionary that we're building be 
+#dependant on the dicitonary itself, we use this function after we create the
+#dictionary so there are no issues.
 def setAllNonClasses(classDict, classDf):
     for key in classDict.keys():
         classDict[key].setNonClasses(classDf.iloc[key-1][2],classDict)

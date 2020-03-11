@@ -9,8 +9,14 @@ import profInfo
 import roomInfo
 import createInputVars as var
 import os
+
+
 File = open('matlabInput1.txt','a')
+#deletes the previous file
 File.truncate(0)
+
+#take the inputs from createInputVars.py and plug them into
+#the final that we're exporting
 inputs = ["nclasses = " + str(var.nclasses) + ";\n",
           "ngroups = " + str(var.ngroups) + ";\n",
           "nprofs = " + str(var.nprofs) + ";\n",
@@ -42,6 +48,11 @@ inputs = ["nclasses = " + str(var.nclasses) + ";\n",
 File.writelines(inputs)
 File.close()
 
+
+"""
+This whole shpiel is just text organization to take the python output
+and turn it into a matlab format that won't yell at me
+"""
 FileIn = open('matlabInput1.txt','rt')
 FileOut = open('matlabInput2.txt','wt')
 for line in FileIn:

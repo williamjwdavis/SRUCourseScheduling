@@ -8,6 +8,14 @@ import pandas as pd
 import pickle
 import os
 
+"""
+buildTimeDict2 takes the dictionary created from the buildTimeDict.py 
+and condenses it.  The purpose of having these two separate dicitonaries
+is that in the first dictionary, we still understand what the keys and values mean,
+and there is a predicatable relationship between the two.  During this round of 
+encoding, the relationship is lost, as this dictionary is used purely for input
+purposes in matlab.
+"""
 f = open('timeEncodingDict.pk1','rb')
 timeDict = pickle.load(f)
 f.close()

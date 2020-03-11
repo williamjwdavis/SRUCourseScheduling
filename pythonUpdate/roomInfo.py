@@ -13,6 +13,9 @@ cwd = os.getcwd()
 data = pd.read_excel("SampleInput.xlsx",sheet_name='Rooms')
 
 class Room():
+    #these are the attributes that we'll describe a room with
+    #we can build these out in the future but that'll also 
+    #require additional methods to encorporate them
     roomName = ''
     MWF_nonTimes = []
     TR_nonTimes = []
@@ -21,6 +24,7 @@ class Room():
     def __init__(self, roomName):
         self.roomName = roomName
     
+    #setters
     def setMWF_nonTimes(self, nonTimes):
         self.MWF_nonTimes = nonTimes
     def setTR_nonTimes(self, nonTimes):
@@ -28,6 +32,7 @@ class Room():
     def setAll_nonTimes(self):
         self.all_nonTimes = self.MWF_nonTimes + self.TR_nonTimes
     
+    #getters
     def getRoom(self):
         return self.roomName
     def getAllTimeConflicts(self):
@@ -41,13 +46,19 @@ class Room():
 def makeRooms(roomDf):
     roomDict = {}
     
+    #get the time requirements from the Excel doc
     MWF_nonTimes = roomDf["MWF_Room-Time_Exceptions"]
     TR_nonTimes = roomDf["TTh_Room-Time_Exceptions"]
     
+    #run the dataframes through the preprocessing from
+    #handTime.py
     MWF_nonTimes = ht.handleTimeAll(MWF_nonTimes)
     TR_nonTimes = ht.handleTimeAll(TR_nonTimes)
     count = 1
     
+    #iterate through the rows of the Excel doc and 
+    #build an object using each cell of the row and 
+    #finally add it to the array
     for row in roomDf.iterrows():
         tempRoom = Room(row[1][0])
         tempRoom.setMWF_nonTimes(MWF_nonTimes[count-1])

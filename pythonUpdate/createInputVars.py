@@ -13,7 +13,9 @@ classes = pd.read_excel("SampleInput.xlsx",sheet_name = 'Classes')
 profs = pd.read_excel("SampleInput.xlsx",sheet_name = 'Prof')
 rooms = pd.read_excel("SampleInput.xlsx",sheet_name = 'Rooms')
 
-
+"""
+OPEN DICTIONARIES
+"""
 f = open('dictionaries/classDict.pk1','rb')
 classDict = pickle.load(f)
 f.close()
@@ -33,12 +35,18 @@ f = open('forbidden_pairs.pk1','rb')
 forbiddenPairs = pickle.load(f)
 f.close()
 
+"""
+CREATE INITIAL CONSTANT VARS
+"""
 nclasses = np.sum(classes["Num_Sections"])
 ngroups = len(classes)
 nprofs = len(profs)
 ntimes = len(timeEncodingDict)
 nrooms = len(rooms)
 
+"""
+BUILD SIMPLE ARRAYS
+"""
 forbidden_rooms_for_course = []
 for i in range(len(classDict)):
     forbidden_rooms_for_course.append(classDict[i+1].getNonRooms())
@@ -62,6 +70,14 @@ for i in range(len(profDict)):
 forbidden_rooms_for_faculty = []
 for i in range(len(profDict)):
     forbidden_rooms_for_faculty.append(profDict[i+1].getNonRooms())
+                 
+load_upper=[]
+for i in range(len(profDict)):
+    load_upper.append(profDict[i+1].getMaxLoad())
+    
+load_lower=[]
+for i in range(len(profDict)):
+    load_lower.append(profDict[i+1].getMinLoad())
     
 c = [] #c is the number of credits of class i 
 for i in range(len(classDict)):
@@ -70,7 +86,22 @@ for i in range(len(classDict)):
 required_courses_faculty = []
 for i in range(len(profDict)):
     required_courses_faculty.append(profDict[i+1].getReqClasses())
+      
+maxPreps = []
+for i in range(len(profDict)):
+    maxPreps.append(profDict[i+1].getMaxPreps())
     
+longCourses = []
+regCourses = []
+for key in timeEncodingDictEarly.keys():
+    if key[len(key)-1]=="L":
+        longCourses.append(timeEncodingDict[timeEncodingDictEarly[key]])
+    else:
+        regCourses.append(timeEncodingDict[timeEncodingDictEarly[key]])
+"""
+We simply manually iterate through the forbidden_pairs
+categories and forbid each unit from every other such unit
+"""
 forbidden_pairs_rooms = []
 alreadySeen={}
 for i in range(nrooms):
@@ -107,21 +138,16 @@ for i in range(len(classDict)):
                 pass
             else:    
                 restricted_pairs_of_classes.append([i+1,ele])
-                
-load_upper=[]
-for i in range(len(profDict)):
-    load_upper.append(profDict[i+1].getMaxLoad())
-    
-load_lower=[]
-for i in range(len(profDict)):
-    load_lower.append(profDict[i+1].getMinLoad())
 
+"""
+Here we iterate through the days and add each doubley encoded time that 
+corresponds to each day to a corresponding array
+"""   
 Monday = []
 Tuesday = []
 Wednesday = []
 Thursday = []
 Friday = []
-
 for key in timeEncodingDictEarly.keys():
     if key[len(key)-1] == 'M':
         Monday.append(timeEncodingDict[timeEncodingDictEarly[key]])
@@ -135,6 +161,10 @@ for key in timeEncodingDictEarly.keys():
         Friday.append(timeEncodingDict[timeEncodingDictEarly[key]])
 
 #FIXME fix day={Monday, Wednesday, Friday}
+"""
+Since groups and sections are handled differently, this is the 
+handling of the groups
+"""
 groups=[]
 count = 1
 for item in range(len(classDict)):
@@ -146,15 +176,3 @@ for item in range(len(classDict)):
         else:
             count+=1
     groups.append(temp)
-    
-maxPreps = []
-for i in range(len(profDict)):
-    maxPreps.append(profDict[i+1].getMaxPreps())
-    
-longCourses = []
-regCourses = []
-for key in timeEncodingDictEarly.keys():
-    if key[len(key)-1]=="L":
-        longCourses.append(timeEncodingDict[timeEncodingDictEarly[key]])
-    else:
-        regCourses.append(timeEncodingDict[timeEncodingDictEarly[key]])
