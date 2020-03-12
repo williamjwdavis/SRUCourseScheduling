@@ -7,6 +7,7 @@ Created on Wed Feb 19 12:41:17 2020
 import pandas as pd 
 import pickle
 import os
+import directories as d
 
 """
 buildTimeDict2 takes the dictionary created from the buildTimeDict.py 
@@ -16,7 +17,7 @@ and there is a predicatable relationship between the two.  During this round of
 encoding, the relationship is lost, as this dictionary is used purely for input
 purposes in matlab.
 """
-f = open('timeEncodingDict.pk1','rb')
+f = open(d.mainDirectory + 'dictionaries/timeEncodingDict.pk1','rb')
 timeDict = pickle.load(f)
 f.close()
 
@@ -35,6 +36,6 @@ for i in range(9):
             timeDict2[str(i)+str(j)] = count
             count+=1
 
-f = open('dictionaries\timeEncodingDictFinal.pk1','wb')
+f = open(d.mainDirectory + 'dictionaries/timeEncodingDictFinal.pk1','wb')
 pickle.dump(timeDict2,f)
 f.close()

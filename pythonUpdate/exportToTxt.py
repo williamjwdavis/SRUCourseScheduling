@@ -9,9 +9,9 @@ import profInfo
 import roomInfo
 import createInputVars as var
 import os
+import directories as d
 
-
-File = open('matlabInput1.txt','a')
+File = open(d.mainDirectory + 'matlabInput1.txt','a')
 #deletes the previous file
 File.truncate(0)
 
@@ -53,41 +53,41 @@ File.close()
 This whole shpiel is just text organization to take the python output
 and turn it into a matlab format that won't yell at me
 """
-FileIn = open('matlabInput1.txt','rt')
-FileOut = open('matlabInput2.txt','wt')
+FileIn = open(d.mainDirectory + 'matlabInput1.txt','rt')
+FileOut = open(d.mainDirectory +'matlabInput2.txt','wt')
 for line in FileIn:
     FileOut.write(line.replace('None',''))
 FileIn.close()
 FileOut.close()
 
-os.unlink('matlabInput1.txt')
+os.unlink(d.mainDirectory +'matlabInput1.txt')
 
-FileIn = open('matlabInput2.txt','rt')
-FileOut = open('matlabInput1.txt','wt')
+FileIn = open(d.mainDirectory +'matlabInput2.txt','rt')
+FileOut = open(d.mainDirectory +'matlabInput1.txt','wt')
 for line in FileIn:
     FileOut.write(line.replace('[[','{['))
 FileIn.close()
 FileOut.close()
 
-os.unlink('matlabInput2.txt')
+os.unlink(d.mainDirectory +'matlabInput2.txt')
 
-FileIn = open('matlabInput1.txt','rt')
-FileOut = open('matlabInput2.txt','wt')
+FileIn = open(d.mainDirectory +'matlabInput1.txt','rt')
+FileOut = open(d.mainDirectory +'matlabInput2.txt','wt')
 for line in FileIn:
     FileOut.write(line.replace(',',''))
 FileIn.close()
 FileOut.close()
 
-os.unlink('matlabInput1.txt')
+os.unlink(d.mainDirectory +'matlabInput1.txt')
 
-FileIn = open('matlabInput2.txt','rt')
-FileOut = open('matlabInputFinal.m','wt')
+FileIn = open(d.mainDirectory +'matlabInput2.txt','rt')
+FileOut = open(d.mainDirectory +'matlabInputFinal.m','wt')
 for line in FileIn:
     FileOut.write(line.replace(']]',']}'))
 FileIn.close()
 FileOut.close()
     
-os.unlink('matlabInput2.txt')
+os.unlink(d.mainDirectory +'matlabInput2.txt')
 
 
 

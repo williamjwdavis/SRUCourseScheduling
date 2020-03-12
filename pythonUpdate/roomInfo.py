@@ -8,9 +8,10 @@ import os
 import pickle
 import pandas as pd
 import handleTime as ht
+import directories as d
 
 cwd = os.getcwd()
-data = pd.read_excel("SampleInput.xlsx",sheet_name='Rooms')
+data = pd.read_excel(d.mainDirectory + "Input.xlsx",sheet_name='Rooms')
 
 class Room():
     #these are the attributes that we'll describe a room with
@@ -72,7 +73,7 @@ def makeRooms(roomDf):
     return roomDict
 
 roomDict = makeRooms(data)
-f = open('dictionaries/roomDict.pk1','wb')
+f = open(d.mainDirectory + 'dictionaries/roomDict.pk1','wb')
 pickle.dump(roomDict,f)
 f.close()
     

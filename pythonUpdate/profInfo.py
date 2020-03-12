@@ -8,15 +8,16 @@ import os
 import pickle
 import pandas as pd
 import handleTime as ht
+import mainDirectory as d
 
 cwd = os.getcwd()
-data = pd.read_excel(cwd + "\SampleInput.xlsx",sheet_name='Prof')
+data = pd.read_excel(d.mainDirectory + "Input.xlsx",sheet_name='Prof')
 
 #import the dictionaries we've built already
-f = open('dictionaries/classDict.pk1',"rb")
+f = open(d.mainDirectory + 'dictionaries/classDict.pk1',"rb")
 classDict = pickle.load(f)
 f.close()
-f = open('dictionaries/roomDict.pk1','rb')
+f = open(d.mainDirectory + 'dictionaries/roomDict.pk1','rb')
 roomDict = pickle.load(f)
 f.close()
 
@@ -152,7 +153,7 @@ def getProfs(profDf):
     return profDict
     
 profDict = getProfs(data)
-f = open("dictionaries\profDict.pk1","wb")
+f = open(d.mainDirectory + "dictionaries\profDict.pk1","wb")
 pickle.dump(profDict,f)
 f.close()
 

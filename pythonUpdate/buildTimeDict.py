@@ -5,7 +5,7 @@ Created on Wed Feb 12 15:28:56 2020
 @author: willi
 """
 import pickle
-
+import directories as d
 """
 This creates the timeEncodingDictionary according to the conventions listed in the documentation.
 The conventions generally are: if it's a regular MWF, or MTThF course (i.e. course that is 
@@ -76,7 +76,7 @@ for i in range(5):
         timeEncodingDict[char1+char2] = str(i)+str(j+5)
   
 #Dump the dictionary into the files for us to use later      
-f = open("dictionaries\timeEncodingDict.pk1",'wb')
+f = open(d.mainDirectory + "dictionaries\timeEncodingDict.pk1",'wb')
 pickle.dump(timeEncodingDict,f)
 f.close()
         

@@ -5,11 +5,12 @@ Created on Wed Feb 12 15:55:39 2020
 @author: willi
 """
 import pickle
+import directories as d
 
-f = open('dictionaries/timeEncodingDict.pk1','rb')
+f = open(d.mainDirectory + 'dictionaries/timeEncodingDict.pk1','rb')
 timeEncodingDict = pickle.load(f)
 f.close()
-f = open('dictionaries/timeEncodingDictFinal.pk1','rb')
+f = open(d.mainDirectory + 'dictionaries/timeEncodingDictFinal.pk1','rb')
 timeEncodingDictFinal = pickle.load(f)
 f.close()
 
@@ -64,7 +65,7 @@ for outerEle in timeEncodingDict.keys():
                     forbidden_pairs.append([timeEncodingDictFinal[temp1],timeEncodingDictFinal[temp2]])
                     alreadySeen[temp1+" "+temp2] = 1
                 
-f = open("forbidden_pairs.pk1",'wb')
+f = open(d.mainDirectory +"forbidden_pairs.pk1",'wb')
 pickle.dump(forbidden_pairs,f)
 f.close()
 
