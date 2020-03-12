@@ -4,22 +4,10 @@ Created on Sat Feb 15 16:10:03 2020
 
 @author: willi
 """
-import os
 import pickle
 import pandas as pd
 import handleTime as ht
-import mainDirectory as d
 
-cwd = os.getcwd()
-data = pd.read_excel(d.mainDirectory + "Input.xlsx",sheet_name='Prof')
-
-#import the dictionaries we've built already
-f = open(d.mainDirectory + 'dictionaries/classDict.pk1',"rb")
-classDict = pickle.load(f)
-f.close()
-f = open(d.mainDirectory + 'dictionaries/roomDict.pk1','rb')
-roomDict = pickle.load(f)
-f.close()
 
 class Prof():
     #these are the current attributes that describe a professor
@@ -60,7 +48,7 @@ class Prof():
         
     #build the classes from the class dictionary and add it to 
     #the array that we'll be exporting
-    def calcNonClasses(self, nonClasses):
+    def calcNonClasses(self, nonClasses, classDict):
         try:
             for nonClass in nonClasses.split(','):
                 for keyNum in classDict:
@@ -71,7 +59,7 @@ class Prof():
     
     #build the rooms from the room dicitonary and add it to 
     #the array that we'll be exporting
-    def calcNonRooms(self, nonRooms):
+    def calcNonRooms(self, nonRooms, roomDict):
         try:
             for nonRoom in nonRooms.split(','):
                 for keyNum in roomDict:
@@ -84,7 +72,7 @@ class Prof():
     #to split the string and treat it separatley and then find
     #it in the class dictionary that we've created, finally
     #adding it to the array that we'll export
-    def calcReqClasses(self, reqClasses):
+    def calcReqClasses(self, reqClasses, classDict):
         try:
             for reqClass in reqClasses.split(','):
                 for keyNum in classDict:
@@ -109,7 +97,7 @@ class Prof():
     def getMaxPreps(self):
         return self.maxPreps
         
-    def printClass(self):
+    def printProf(self):
         print("Name: " + self.name)
         print("Min Load: " + str(self.minLoad))
         print("Max Load: " + str(self.maxLoad))
@@ -118,7 +106,7 @@ class Prof():
         print("MWF NonTimes: " + str(self.MWF_nonTimes))
         print("TR NonTimes: " + str(self.TR_nonTimes))
     
-def getProfs(profDf):
+def getProfs(profDf, classDict, roomDict):
     profDict = {}
     
     #grab the times from the Excel doc
@@ -136,25 +124,37 @@ def getProfs(profDf):
     #add it to an object array
     for row in profDf.iterrows():
         tempProf = Prof(row[1][0])
-        tempProf.calcReqClasses(row[1][1])
-        tempProf.calcNonClasses(row[1][2])
+        tempProf.calcReqClasses(row[1][1], classDict)
+        tempProf.calcNonClasses(row[1][2], classDict)
         tempProf.setMWF_nonTimes(MWF_times[count-1])
         tempProf.setTR_nonTimes(TR_times[count-1])
         tempProf.setAll_nonTimes()
-        tempProf.calcNonRooms(row[1][5])
+        tempProf.calcNonRooms(row[1][5], roomDict)
         tempProf.setMinLoad(row[1][6])
         tempProf.setMaxLoad(row[1][7])
         tempProf.setMaxPreps(row[1][8])
-        #tempProf.printClass()
+        #tempProf.printProf()
         
         profDict[count] = tempProf
         count+=1
     
     return profDict
+
+def run(path):
+    data = pd.read_excel(path + "Input.xlsx",sheet_name='Prof')
+
+    #import the dictionaries we've built already
+    f = open(path + 'dictionaries/classDict.pk1',"rb")
+    classDict = pickle.load(f)
+    f.close()
+    f = open(path + 'dictionaries/roomDict.pk1','rb')
+    roomDict = pickle.load(f)
+    f.close()
+
     
-profDict = getProfs(data)
-f = open(d.mainDirectory + "dictionaries\profDict.pk1","wb")
-pickle.dump(profDict,f)
-f.close()
+    profDict = getProfs(data, classDict, roomDict)
+    f = open(path + "dictionaries/profDict.pk1","wb")
+    pickle.dump(profDict,f)
+    f.close()
 
         

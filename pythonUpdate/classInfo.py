@@ -4,18 +4,9 @@ Created on Fri Feb 14 19:10:05 2020
 
 @author: willi
 """
-import os
 import pickle
 import pandas as pd
 import handleTime as ht
-import directories as d
-
-cwd = os.getcwd()
-data = pd.read_excel(d.mainDirectory + "Input.xlsx",sheet_name="Classes")
-
-f = open(d.mainDirectory + 'dictionaries/roomDict.pk1','rb')
-roomDict = pickle.load(f)
-f.close()
 
 class Class():
     #These are the attributes we'll be tracking for the classes
@@ -71,7 +62,7 @@ class Class():
     #this sets the rooms by calling on the room dictionary that was
     #made and getting hte appropriate encoded value of the rooms
     #thus adding it to the array
-    def calcNonRooms(self, nonRooms):
+    def calcNonRooms(self, nonRooms, roomDict):
         try:
             for nonRoom in nonRooms.split(','):
                 for keyNum in roomDict:
@@ -107,7 +98,7 @@ class Class():
         print("MWF_NonTimes: " + str(self.MWF_nonTimes))
         print("TTH_NonTimes: " + str(self.TR_nonTimes))
     
-def getClasses(classDf):
+def getClasses(classDf, roomDict):
     classDict={}
     
     #slot the times into dataframes
@@ -128,7 +119,7 @@ def getClasses(classDf):
         tempClass.setMWF_nonTimes(MWF_times[count-1])
         tempClass.setTR_nonTimes(TR_times[count-1])
         tempClass.setAll_nonTimes()
-        tempClass.calcNonRooms(row[1][5])
+        tempClass.calcNonRooms(row[1][5], roomDict)
         tempClass.setNumSections(row[1][6])        
         #tempClass.printClass()
         classDict[count]=tempClass
@@ -143,10 +134,18 @@ def setAllNonClasses(classDict, classDf):
     for key in classDict.keys():
         classDict[key].setNonClasses(classDf.iloc[key-1][2],classDict)
     return classDict
-        
-classDict = getClasses(data)
-classDict = setAllNonClasses(classDict,data)
-f = open(d.mainDirectory + "dictionaries\classDict.pk1",'wb')
-pickle.dump(classDict, f)
-f.close()
+
+def run(path):   
+    data = pd.read_excel(path + "Input.xlsx",sheet_name="Classes")
+
+    #Load the roomDictionary so that we can use it to build the objects
+    f = open(path + 'dictionaries/roomDict.pk1','rb')
+    roomDict = pickle.load(f)
+    f.close()
+
+    classDict = getClasses(data, roomDict)
+    classDict = setAllNonClasses(classDict,data)
+    f = open(path + "dictionaries/classDict.pk1",'wb')
+    pickle.dump(classDict, f)
+    f.close()
     

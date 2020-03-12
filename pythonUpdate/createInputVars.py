@@ -4,35 +4,36 @@ Created on Tue Feb 25 15:30:59 2020
 
 @author: willi
 """
-import os
 import pandas as pd
 import numpy as np
 import pickle
-import directories as d
+import sys
 
-classes = pd.read_excel(d.mainDirectory +"Input.xlsx",sheet_name = 'Classes')
-profs = pd.read_excel(d.mainDirectory +"Input.xlsx",sheet_name = 'Prof')
-rooms = pd.read_excel(d.mainDirectory +"Input.xlsx",sheet_name = 'Rooms')
+path = sys.argv[0]
+
+classes = pd.read_excel(path +"/../Input.xlsx",sheet_name = 'Classes')
+profs = pd.read_excel(path +"/../Input.xlsx",sheet_name = 'Prof')
+rooms = pd.read_excel(path +"/../Input.xlsx",sheet_name = 'Rooms')
 
 """
 OPEN DICTIONARIES
 """
-f = open(d.mainDirectory +'dictionaries/classDict.pk1','rb')
+f = open(path +'/../dictionaries/classDict.pk1','rb')
 classDict = pickle.load(f)
 f.close()
-f = open(d.mainDirectory +'dictionaries/profDict.pk1','rb')
+f = open(path+'/../dictionaries/profDict.pk1','rb')
 profDict = pickle.load(f)
 f.close()
-f = open(d.mainDirectory +'dictionaries/roomDict.pk1','rb')
+f = open(path+'/../dictionaries/roomDict.pk1','rb')
 roomDict = pickle.load(f)
 f.close()
-f = open(d.mainDirectory +'dictionaries/timeEncodingDict.pk1','rb')
+f = open(path+'/../dictionaries/timeEncodingDict.pk1','rb')
 timeEncodingDictEarly = pickle.load(f)
 f.close()
-f = open(d.mainDirectory +'dictionaries/timeEncodingDictFinal.pk1','rb')
+f = open(path +'/../dictionaries/timeEncodingDictFinal.pk1','rb')
 timeEncodingDict = pickle.load(f)
 f.close()
-f = open(d.mainDirectory +'forbidden_pairs.pk1','rb')
+f = open(path+'/../forbidden_pairs.pk1','rb')
 forbiddenPairs = pickle.load(f)
 f.close()
 

@@ -4,14 +4,10 @@ Created on Wed Feb 19 11:00:49 2020
 
 @author: willi
 """
-import os
 import pickle
 import pandas as pd
 import handleTime as ht
-import directories as d
 
-cwd = os.getcwd()
-data = pd.read_excel(d.mainDirectory + "Input.xlsx",sheet_name='Rooms')
 
 class Room():
     #these are the attributes that we'll describe a room with
@@ -72,8 +68,11 @@ def makeRooms(roomDf):
         
     return roomDict
 
-roomDict = makeRooms(data)
-f = open(d.mainDirectory + 'dictionaries/roomDict.pk1','wb')
-pickle.dump(roomDict,f)
-f.close()
+def run(path):
+    data = pd.read_excel(path + "Input.xlsx",sheet_name='Rooms')
+    
+    roomDict = makeRooms(data)
+    f = open(path + 'dictionaries/roomDict.pk1','wb')
+    pickle.dump(roomDict,f)
+    f.close()
     
