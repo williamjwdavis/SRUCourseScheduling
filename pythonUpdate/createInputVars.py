@@ -11,9 +11,9 @@ import sys
 
 path = sys.argv[0]
 
-classes = pd.read_excel(path +"/../Input.xlsx",sheet_name = 'Classes')
-profs = pd.read_excel(path +"/../Input.xlsx",sheet_name = 'Prof')
-rooms = pd.read_excel(path +"/../Input.xlsx",sheet_name = 'Rooms')
+classes = pd.read_excel(path +"/../input/Input.xlsx",sheet_name = 'Classes')
+profs = pd.read_excel(path +"/../input/Input.xlsx",sheet_name = 'Prof')
+rooms = pd.read_excel(path +"/../input/Input.xlsx",sheet_name = 'Rooms')
 
 """
 OPEN DICTIONARIES

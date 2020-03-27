@@ -82,7 +82,7 @@ def run(path):
     os.unlink(path+'matlabInput1.txt')
     
     FileIn = open(path+'matlabInput2.txt','rt')
-    FileOut = open(path+'matlabInputFinal.m','wt')
+    FileOut = open(path+'output/matlabInputFinal.m','wt')
     for line in FileIn:
         FileOut.write(line.replace(']]',']}'))
     FileIn.close()
