@@ -72,7 +72,7 @@ def run(path):
     
     forbidden_pairs = buildDictionary(path)
           
-    f = open(path +"forbidden_pairs.pk1",'wb')
+    f = open(path +"/scripts/forbidden_pairs.pk1",'wb')
     pickle.dump(forbidden_pairs,f)
     f.close()
 

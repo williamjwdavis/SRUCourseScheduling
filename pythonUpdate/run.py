@@ -9,7 +9,9 @@ import sys
 
 #we have to make sure the user is in the correct directory
 workingPath = sys.argv[0]
-workingPath = workingPath+"/../"
+workingPath = workingPath+"/../scripts"
+
+os.chdir(workingPath)
 
 import buildTimeConstraints
 import buildTimeDict
@@ -18,11 +20,13 @@ import roomInfo
 import classInfo
 import profInfo
 
+workingPath = workingPath+"/../"
+
 #Build the null time pairs if they don't exist
-if os.path.isfile(workingPath+"forbidden_pairs.pk1"):
+if os.path.isfile(workingPath+"scripts/forbidden_pairs.pk1"):
     pass
 else:
-     buildTimeConstraints.run(workingPath)
+     buildTimeConstraints.run(workingPath+"scripts/")
 
 #Build the time dictionaries if they don't exist
 if os.path.isfile(workingPath+"dictionaries/timeEncodingDictFinal.pk1"):

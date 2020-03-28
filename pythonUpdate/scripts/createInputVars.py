@@ -33,7 +33,7 @@ f.close()
 f = open(path +'/../dictionaries/timeEncodingDictFinal.pk1','rb')
 timeEncodingDict = pickle.load(f)
 f.close()
-f = open(path+'/../forbidden_pairs.pk1','rb')
+f = open(path+'/../scripts/forbidden_pairs.pk1','rb')
 forbiddenPairs = pickle.load(f)
 f.close()
 
@@ -162,7 +162,7 @@ for key in timeEncodingDictEarly.keys():
     elif (key[len(key)-1]=="F"):
         Friday.append(timeEncodingDict[timeEncodingDictEarly[key]])
 
-#FIXME fix day={Monday, Wednesday, Friday}
+
 """
 Since groups and sections are handled differently, this is the 
 handling of the groups
