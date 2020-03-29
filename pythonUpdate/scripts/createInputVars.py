@@ -11,29 +11,29 @@ import sys
 
 path = sys.argv[0]
 
-classes = pd.read_excel(path +"/../input/Input.xlsx",sheet_name = 'Classes')
-profs = pd.read_excel(path +"/../input/Input.xlsx",sheet_name = 'Prof')
-rooms = pd.read_excel(path +"/../input/Input.xlsx",sheet_name = 'Rooms')
+classes = pd.read_excel(path +"/../../input/Input.xlsx",sheet_name = 'Classes')
+profs = pd.read_excel(path +"/../../input/Input.xlsx",sheet_name = 'Prof')
+rooms = pd.read_excel(path +"/../../input/Input.xlsx",sheet_name = 'Rooms')
 
 """
 OPEN DICTIONARIES
 """
-f = open(path +'/../dictionaries/classDict.pk1','rb')
+f = open(path +'/../../dictionaries/classDict.pk1','rb')
 classDict = pickle.load(f)
 f.close()
-f = open(path+'/../dictionaries/profDict.pk1','rb')
+f = open(path+'/../../dictionaries/profDict.pk1','rb')
 profDict = pickle.load(f)
 f.close()
-f = open(path+'/../dictionaries/roomDict.pk1','rb')
+f = open(path+'/../../dictionaries/roomDict.pk1','rb')
 roomDict = pickle.load(f)
 f.close()
-f = open(path+'/../dictionaries/timeEncodingDict.pk1','rb')
+f = open(path+'/../../dictionaries/timeEncodingDict.pk1','rb')
 timeEncodingDictEarly = pickle.load(f)
 f.close()
-f = open(path +'/../dictionaries/timeEncodingDictFinal.pk1','rb')
+f = open(path +'/../../dictionaries/timeEncodingDictFinal.pk1','rb')
 timeEncodingDict = pickle.load(f)
 f.close()
-f = open(path+'/../scripts/forbidden_pairs.pk1','rb')
+f = open(path+'/../forbidden_pairs.pk1','rb')
 forbiddenPairs = pickle.load(f)
 f.close()
 

@@ -136,7 +136,7 @@ def setAllNonClasses(classDict, classDf):
     return classDict
 
 def run(path):   
-    data = pd.read_excel(path + "Input.xlsx",sheet_name="Classes")
+    data = pd.read_excel(path + "input/Input.xlsx",sheet_name="Classes")
 
     #Load the roomDictionary so that we can use it to build the objects
     f = open(path + 'dictionaries/roomDict.pk1','rb')

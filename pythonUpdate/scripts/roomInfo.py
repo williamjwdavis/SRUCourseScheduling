@@ -69,7 +69,7 @@ def makeRooms(roomDf):
     return roomDict
 
 def run(path):
-    data = pd.read_excel(path + "Input.xlsx",sheet_name='Rooms')
+    data = pd.read_excel(path + "input/Input.xlsx",sheet_name='Rooms')
     
     roomDict = makeRooms(data)
     f = open(path + 'dictionaries/roomDict.pk1','wb')

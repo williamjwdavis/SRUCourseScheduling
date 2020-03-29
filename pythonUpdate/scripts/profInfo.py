@@ -141,7 +141,7 @@ def getProfs(profDf, classDict, roomDict):
     return profDict
 
 def run(path):
-    data = pd.read_excel(path + "Input.xlsx",sheet_name='Prof')
+    data = pd.read_excel(path + "input/Input.xlsx",sheet_name='Prof')
 
     #import the dictionaries we've built already
     f = open(path + 'dictionaries/classDict.pk1',"rb")

@@ -9,9 +9,7 @@ import sys
 
 #we have to make sure the user is in the correct directory
 workingPath = sys.argv[0]
-workingPath = workingPath+"/../scripts"
-
-os.chdir(workingPath)
+workingPath = workingPath+"/../"
 
 import buildTimeConstraints
 import buildTimeDict

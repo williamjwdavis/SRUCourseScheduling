@@ -137,10 +137,10 @@ def handleTime2(final, timeEncodingDictFinal):
 
 def handleTimeAll(final):
     #Load in our time encoding dictionary
-    f = open('dictionaries/timeEncodingDict.pk1','rb')
+    f = open('../dictionaries/timeEncodingDict.pk1','rb')
     timeEncodingDict = pickle.load(f)
     f.close()
-    f = open('dictionaries/timeEncodingDictFinal.pk1','rb')
+    f = open('../dictionaries/timeEncodingDictFinal.pk1','rb')
     timeEncodingDictFinal = pickle.load(f)
     f.close()
     
